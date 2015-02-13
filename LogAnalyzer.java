@@ -87,8 +87,7 @@ public class LogAnalyzer
     }
 
     /**
-     * Analyze the hourly access data from the log file for a given day.
-     * @param day the day to analize.
+     * Analyze the daily access data from the log file.
      */
     public void analyzeDailyData()
     {
