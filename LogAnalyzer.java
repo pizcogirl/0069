@@ -65,6 +65,28 @@ public class LogAnalyzer
         }
         return access;
     }
+    
+    /**
+     * Devuelve a que hora tubo más accesos el servidor.
+     * Si no se ha analizado el log, devuelve 0.
+     */
+     public int busiestHour()
+    {
+        // Creamos un indice y un entero para devolver al final del metodo
+        int busiestHour = 0;
+        int index = 0;
+        // Recorremos la array y vamos guardando en busiestHour la hora si
+        // el numero de accesos fue mayor que en la hora anterior
+         while(index < hourCounts.length)
+         {
+           if (hourCounts[index] > hourCounts[busiestHour])
+           {
+               busiestHour = index;
+            }
+           index++;
+        }
+        return busiestHour;
+    }
 
     /**
      * Print the hourly counts.
