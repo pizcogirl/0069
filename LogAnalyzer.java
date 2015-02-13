@@ -23,7 +23,7 @@ public class LogAnalyzer
         // Create the reader to obtain the data from the filename
         reader = new LogfileReader(filename);
     }
-    
+
     /**
      * Create an object to analyze hourly web accesses.
      */
@@ -47,7 +47,7 @@ public class LogAnalyzer
             hourCounts[hour]++;
         }
     }
-    
+
     /**
      * Devuelve el numero de accesos al servidor web registrados en ese log.
      * Si aun no se ha analizado el log, devuelve 0.
@@ -58,63 +58,63 @@ public class LogAnalyzer
         int access = 0;
         int index = 0;
         // Recorremos la array y vamos sumando en access los accesos de cada hora
-         while(index < hourCounts.length)
-         {
-           access = access + hourCounts[index];
-           index++;
+        while(index < hourCounts.length)
+        {
+            access = access + hourCounts[index];
+            index++;
         }
         return access;
     }
-    
+
     /**
      * Devuelve a que hora tubo más accesos el servidor.
      * Si no se ha analizado el log, devuelve -1.
      */
-     public int busiestHour()
+    public int busiestHour()
     {
         // Creamos un indice y un entero para devolver al final del metodo
         int busiestHour = -1;
         int index = 0;
         // Recorremos la array y vamos guardando en busiestHour la hora si
         // el numero de accesos fue mayor que en la hora anterior
-         while(index < hourCounts.length)
-         {
-           if (hourCounts[index] > hourCounts[busiestHour + 1])
-           {
-               busiestHour = (index);
+        while(index < hourCounts.length)
+        {
+            if (hourCounts[index] > hourCounts[busiestHour + 1])
+            {
+                busiestHour = (index);
             }
-           index++;
+            index++;
         }
         return busiestHour;
     }
-    
+
     /**
      * Devuelve a que hora tubo menos accesos el servidor.
      * Si no se ha analizado el log, devuelve -1.
      */
-     public int quietestHour()
+    public int quietestHour()
     {
         // Creamos un indice y un entero para devolver al final del metodo
         int quietestHour = -1;
         int index = 0;
         // Recorremos la array y vamos guardando en quietestHour la hora si
         // el numero de accesos fue menor que en la hora anterior
-         while(index < hourCounts.length)
-         {
-           if (hourCounts[index] < hourCounts[quietestHour + 1])
-           {
-               quietestHour = (index);
+        while(index < hourCounts.length)
+        {
+            if (hourCounts[index] < hourCounts[quietestHour + 1])
+            {
+                quietestHour = (index);
             }
-           index++;
+            index++;
         }
         return quietestHour;
     }
-    
-     /**
+
+    /**
      * Devuelve la primera de las dos horas consecutivas tuvo más accesos el servidor.
      * Si no se ha analizado el log, devuelve -1.
      */
-     public int busiestTwoHour()
+    public int busiestTwoHour()
     {
         // Creamos un indice y un entero para devolver al final del metodo
         int busiestTwoHour = -1;
@@ -123,18 +123,39 @@ public class LogAnalyzer
         int accessTwoHours = 0;
         // Recorremos la array y vamos guardando en busiestTwoHour la hora si
         // el numero de accesos fue mayor durante esa hora y la siguiente
-         while(index < (hourCounts.length - 1))
-         {
-           if ((hourCounts[index] + hourCounts[index+1]) > accessTwoHours)
-           {
-               accessTwoHours = hourCounts[index] + hourCounts[index+1];
-               busiestTwoHour = (index);
+        while(index < (hourCounts.length - 1))
+        {
+            if ((hourCounts[index] + hourCounts[index+1]) > accessTwoHours)
+            {
+                accessTwoHours = hourCounts[index] + hourCounts[index+1];
+                busiestTwoHour = (index);
             }
-           index = index + 1;
+            index = index + 1;
         }
         return busiestTwoHour;
     }
-    
+
+    /** 
+     * Analyze the hourly accesses in the given date
+     *
+     * @param day     The given day
+     * @param month The given month
+     * @param year  The given year
+     */
+    public void analyzeDataFromGivenDay(int day, int month, int year)
+    {
+        // Leemos el log, si el año, dia y mes coincide con los introducidos, contamos,
+        // sino lo descartamos
+        while(reader.hasNext()) 
+        {
+            LogEntry entry = reader.next();
+            if ((entry.getYear() == year) && (entry.getMonth() == month) && (entry.getDay() == day))
+            {
+                int hour = entry.getHour();
+                hourCounts[hour]++;
+            }
+        }
+    }
 
     /**
      * Print the hourly counts.
