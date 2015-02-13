@@ -20,18 +20,18 @@ public class LogEntry implements Comparable<LogEntry>
     // At which index in dataValues the different fields
     // from a log line are stored.
     private static final int YEAR = 0, MONTH = 1, DAY = 2,
-                             HOUR = 3, MINUTE = 4;
+                             HOUR = 3, MINUTE = 4, ACCESS = 5;
     // The number of fields. If more fields are added, e.g. for
     // seconds or a status code, then this value must be increased
     // to match.
-    private static final int NUMBER_OF_FIELDS = 5;
+    private static final int NUMBER_OF_FIELDS = 6;
                       
     /**
      * Decompose a log line so that the individual fields
      * are available.
      * @param logline A single line from the log.
      *                This should be in the format:
-     *                year month day hour minute etc.
+     *                year month day hour minute access etc.
      */
     public LogEntry(String logline)
     {
@@ -50,8 +50,9 @@ public class LogEntry implements Comparable<LogEntry>
      * @param day The day (1-31)
      * @param hour The hour (0-23)
      * @param minute The minute (0-59)
+     * @param access The type of access (200 success, 403 and 404 error)
      */
-    public LogEntry(int year, int month, int day, int hour, int minute)
+    public LogEntry(int year, int month, int day, int hour, int minute, int access)
     {
         // The array to store the data for a single line.
         dataValues = new int[NUMBER_OF_FIELDS];
@@ -60,6 +61,7 @@ public class LogEntry implements Comparable<LogEntry>
         dataValues[DAY] = day;
         dataValues[HOUR] = hour;
         dataValues[MINUTE] = minute;
+        dataValues[ACCESS] = access;
         setWhen();
     }
     
@@ -106,6 +108,15 @@ public class LogEntry implements Comparable<LogEntry>
     public int getMinute()
     {
         return dataValues[MINUTE];
+    }
+    
+     /**
+     * Return the access type.
+     * @return The access field from the log line.
+     */
+    public int getAccess()
+    {
+        return dataValues[ACCESS];
     }
     
     /**
