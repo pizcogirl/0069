@@ -9,6 +9,8 @@ public class LogAnalyzer
 {
     // Where to calculate the hourly access counts.
     private int[] hourCounts;
+    // Where to calculate the daily access counts.
+    private int[] dailyCounts;
     // Use a LogfileReader to access the data.
     private LogfileReader reader;
 
@@ -20,6 +22,9 @@ public class LogAnalyzer
         // Create the array object to hold the hourly
         // access counts.
         hourCounts = new int[24];
+        // Create the array object to hold the daily
+        // access counts.
+        dailyCounts = new int[31];
         // Create the reader to obtain the data from the filename
         reader = new LogfileReader(filename);
     }
@@ -32,6 +37,9 @@ public class LogAnalyzer
         // Create the array object to hold the hourly
         // access counts.
         hourCounts = new int[24];
+        // Create the array object to hold the daily
+        // access counts.
+        dailyCounts = new int[31];
         // Create the reader to obtain the data.
         reader = new LogfileReader();
     }
@@ -45,6 +53,42 @@ public class LogAnalyzer
             LogEntry entry = reader.next();
             int hour = entry.getHour();
             hourCounts[hour]++;
+        }
+    }
+
+    /** 
+     * Analyze the hourly accesses in the given date
+     *
+     * @param day     The given day
+     * @param month The given month
+     * @param year  The given year
+     */
+    public void analyzeDataFromGivenDay(int day, int month, int year)
+    {
+        // Leemos el log, si el año, dia y mes coincide con los introducidos, contamos,
+        // sino lo descartamos
+        while(reader.hasNext()) 
+        {
+            LogEntry entry = reader.next();
+            if ((entry.getYear() == year) && (entry.getMonth() == month) && (entry.getDay() == day))
+            {
+                int hour = entry.getHour();
+                hourCounts[hour]++;
+            }
+        }
+    }
+
+    /**
+     * Analyze the hourly access data from the log file for a given day.
+     * @param day the day to analize.
+     */
+    public void analyzeDailyData()
+    {
+        while(reader.hasNext()) 
+        {
+            LogEntry entry = reader.next();
+            int day = entry.getDay();
+            dailyCounts[day - 1]++;
         }
     }
 
@@ -135,28 +179,6 @@ public class LogAnalyzer
         return busiestTwoHour;
     }
 
-    /** 
-     * Analyze the hourly accesses in the given date
-     *
-     * @param day     The given day
-     * @param month The given month
-     * @param year  The given year
-     */
-    public void analyzeDataFromGivenDay(int day, int month, int year)
-    {
-        // Leemos el log, si el año, dia y mes coincide con los introducidos, contamos,
-        // sino lo descartamos
-        while(reader.hasNext()) 
-        {
-            LogEntry entry = reader.next();
-            if ((entry.getYear() == year) && (entry.getMonth() == month) && (entry.getDay() == day))
-            {
-                int hour = entry.getHour();
-                hourCounts[hour]++;
-            }
-        }
-    }
-
     /**
      * Print the hourly counts.
      * These should have been set with a prior
@@ -167,6 +189,19 @@ public class LogAnalyzer
         System.out.println("Hr: Count");
         for(int hour = 0; hour < hourCounts.length; hour++) {
             System.out.println(hour + ": " + hourCounts[hour]);
+        }
+    }
+
+    /**
+     * Print the daily counts.
+     * These should have been set with a prior
+     * call to analyzeDailyData.
+     */
+    public void printDailyCounts()
+    {
+        System.out.println("Day: Count");
+        for(int day = 0; day < dailyCounts.length; day++) {
+            System.out.println((day +1) + ": " + dailyCounts[day]);
         }
     }
 
