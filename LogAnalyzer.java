@@ -47,6 +47,24 @@ public class LogAnalyzer
             hourCounts[hour]++;
         }
     }
+    
+    /**
+     * Devuelve el numero de accesos al servidor web registrados en ese log.
+     * Si aun no se ha analizado el log, devuelve 0.
+     */
+    public int numberOfAccesses()
+    {
+        // Creamos un indice un entero para devolver al final del metodo
+        int access = 0;
+        int index = 0;
+        // Recorremos la array y vamos sumando en access los accesos de cada hora
+         while(index < hourCounts.length)
+         {
+           access = access + hourCounts[index];
+           index++;
+        }
+        return access;
+    }
 
     /**
      * Print the hourly counts.
