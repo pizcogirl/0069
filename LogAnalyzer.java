@@ -111,7 +111,7 @@ public class LogAnalyzer
     }
     
      /**
-     * Devuelve a que dos horas consecutivas tubo más accesos el servidor.
+     * Devuelve la primera de las dos horas consecutivas tuvo más accesos el servidor.
      * Si no se ha analizado el log, devuelve -1.
      */
      public int busiestTwoHour()
@@ -123,14 +123,14 @@ public class LogAnalyzer
         int accessTwoHours = 0;
         // Recorremos la array y vamos guardando en busiestTwoHour la hora si
         // el numero de accesos fue mayor durante esa hora y la siguiente
-         while(index < hourCounts.length)
+         while(index < (hourCounts.length - 1))
          {
            if ((hourCounts[index] + hourCounts[index+1]) > accessTwoHours)
            {
                accessTwoHours = hourCounts[index] + hourCounts[index+1];
                busiestTwoHour = (index);
             }
-           index = index + 2;
+           index = index + 1;
         }
         return busiestTwoHour;
     }
