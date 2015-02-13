@@ -73,10 +73,13 @@ public class LogfileCreator
         {
             case 0:
             access = 200;
+            break;
             case 1:
             access = 403;
+            break;
             case 2:
             access = 404;
+            break;
         }
         
         return new LogEntry(year, month, day, hour, minute, access);

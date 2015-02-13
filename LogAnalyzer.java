@@ -9,7 +9,7 @@ public class LogAnalyzer
 {
     // Where to calculate the hourly access counts.
     private int[] hourCounts;
-        // Where to calculate the successfully hourly access counts.
+    // Where to calculate the successfully hourly access counts.
     private int[] hourSuccessCounts;
     // Where to calculate the daily access counts.
     private int[] dailyCounts;
@@ -24,6 +24,9 @@ public class LogAnalyzer
         // Create the array object to hold the hourly
         // access counts.
         hourCounts = new int[24];
+        // Create the array object to hold the hourly
+        // access counts wich was successfull.
+        hourSuccessCounts = new int[24];
         // Create the array object to hold the daily
         // access counts.
         dailyCounts = new int[31];
@@ -39,6 +42,9 @@ public class LogAnalyzer
         // Create the array object to hold the hourly
         // access counts.
         hourCounts = new int[24];
+        // Create the array object to hold the hourly
+        // access counts wich was successfull.
+        hourSuccessCounts = new int[24];
         // Create the array object to hold the daily
         // access counts.
         dailyCounts = new int[31];
@@ -91,6 +97,24 @@ public class LogAnalyzer
             LogEntry entry = reader.next();
             int day = entry.getDay();
             dailyCounts[day - 1]++;
+        }
+    }
+
+    /**
+     * Analyze the successfully hourly access data from the log file.
+     */
+    public void analyzeSuccessHourlyData()
+    {
+        // Iteramos sobre el log
+        while(reader.hasNext()) 
+        {
+            LogEntry entry = reader.next();
+            // Si en el campo success tenemos 200, sumamos uno, sino no
+            if (entry.getAccess() == 200)
+            {
+                int hour = entry.getHour();
+                hourSuccessCounts[hour]++;
+            }
         }
     }
 
@@ -204,6 +228,19 @@ public class LogAnalyzer
         System.out.println("Day: Count");
         for(int day = 0; day < dailyCounts.length; day++) {
             System.out.println((day +1) + ": " + dailyCounts[day]);
+        }
+    }
+    
+        /**
+     * Print the successfull hourly counts.
+     * These should have been set with a prior
+     * call to analyzeSuccessHourlyData.
+     */
+    public void printSuccessHourlyCounts()
+    {
+        System.out.println("Hr: Count");
+        for(int hour = 0; hour < hourSuccessCounts.length; hour++) {
+            System.out.println(hour + ": " + hourSuccessCounts[hour]);
         }
     }
 
