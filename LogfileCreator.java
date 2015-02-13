@@ -65,7 +65,21 @@ public class LogfileCreator
         int day = 1 + rand.nextInt(28);
         int hour = rand.nextInt(24);
         int minute = rand.nextInt(60);
-        return new LogEntry(year, month, day, hour, minute);
+        // Usamos un numero random para añadir uno de los tres posibles registros
+        int temp = rand.nextInt(3);
+        // Usamos un switch para dar valores a access
+        int access = 0;
+        switch(temp)
+        {
+            case 0:
+            access = 200;
+            case 1:
+            access = 403;
+            case 2:
+            access = 404;
+        }
+        
+        return new LogEntry(year, month, day, hour, minute, access);
     }
 
 }
