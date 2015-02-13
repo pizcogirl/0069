@@ -9,6 +9,8 @@ public class LogAnalyzer
 {
     // Where to calculate the hourly access counts.
     private int[] hourCounts;
+        // Where to calculate the successfully hourly access counts.
+    private int[] hourSuccessCounts;
     // Where to calculate the daily access counts.
     private int[] dailyCounts;
     // Use a LogfileReader to access the data.
